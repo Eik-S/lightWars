@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Light Wars</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <button id="fireButton">Push</button>
+
+        <!-- Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+        <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script>
+            $(function() {
+                var socket = io('http://192.168.188.21:3000');
+
+                socket.emit('playerCon', localStorage.getItem('uid'));
+
+                socket.on('saveId', function( uid){
+                    localStorage.setItem('uid', uid);
+                });
+
+                $('#fireButton').on('click', function(){
+                    socket.emit('shoot');
+                });
+
+            });
+        </script>
+    </body>
+</html>
