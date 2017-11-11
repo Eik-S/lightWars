@@ -13,7 +13,8 @@
         <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script>
             $(function() {
-                var socket = io('http://192.168.188.21:3000');
+                let socket = io('http://localhost:3000');
+                let team = 1;
 
                 socket.emit('playerCon', localStorage.getItem('uid'));
 
@@ -22,7 +23,9 @@
                 });
 
                 $('#fireButton').on('click', function(){
-                    socket.emit('shoot');
+                    if( localStorage.getItem('uid') && team > 0) {
+                        socket.emit('shoot');
+                    }
                 });
 
             });

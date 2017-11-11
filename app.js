@@ -1,4 +1,5 @@
 var lichterkette = require('./lichterkette/lichterkette');
+var playground = require('./playground');
 var app = require('express')();
 var http = require('http').createServer( app);
 var io = require('socket.io')(http);
@@ -6,6 +7,7 @@ var uuid = require('uuid/v4');
 
 let size = 100;
 let players = [];
+let bar = [];
 
 class Player {
   constructor( id) {
@@ -15,6 +17,8 @@ class Player {
 
 io.on('connection', function(socket){
   let userId;
+  lichterkette.init( size);
+  playground.initBar( size);
 
   socket.on('playerCon', function(uid){
     userId = uid;
@@ -41,6 +45,7 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     removePlayer( userId);
   });
+
 });
 
 function addPlayer( id) {
@@ -58,23 +63,21 @@ function removePlayer( id, team) {
   console.log(JSON.stringify(players));
 }
 
-http.listen(3000, function(){
-  console.log("listening on port 3000");
-});
-
-lichterkette.init( size);
-
 function shoot() {
   var red = {r:255, g:0, b:0};
-  for( var i = 0; i < size; i++){
-    var index = i;
-    setTimeout(function(){
-      lichterkette.set( index, red);
-    }, i*100);
+  var white = {r: 255, g:255, b:255};
+  var black = {r: 0, g:0, b:0};
+  for( let i = 0; i <= size; i++){
+    setTimeout(function( ){
+      lichterkette.set( i-1, black);
+      lichterkette.set( i, red);
+    }, i*5);
   }
 }
 
 
-setInterval(function(){
-    lichterkette.draw();
-},20);  
+http.listen(3000, function(){
+  console.log("listening on port 3000");
+});
+
+
