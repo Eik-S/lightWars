@@ -31,21 +31,21 @@ module.exports = {
     if( !values.init){
       for(let i = 0; i<count; i++){
         values.kette.push({r:0,g:0,b:0});
-        draw();
       }
       values.init = true;
     }
+  },
+  getStatus: function(){
+    return values.init;
+  },
+  getLength: function(index){
+    return values.kette.length;
   },
   set: function(index, value){
     index = parseInt(index);
     if(values.init && parseInt(index) >= 0 && index < values.kette.length){
       values.kette[index] = value;
       draw();
-    }
-  },
-  get: function(index){
-    if(values.init && index >= 0 && index < values.kette.length){
-      return values.kette[index];
     }
   },
   draw: function(){

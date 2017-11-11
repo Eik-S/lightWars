@@ -6,19 +6,21 @@ var io = require('socket.io')(http);
 var uuid = require('uuid/v4');
 
 let size = 100;
+
 let players = [];
 let bar = [];
 
 class Player {
-  constructor( id) {
+  constructor( id, team) {
     this.id = id;
+    this.team = team;
   }
 }
 
 io.on('connection', function(socket){
   let userId;
   lichterkette.init( size);
-  playground.initBar( size);
+  playground.init();
 
   socket.on('playerCon', function(uid){
     userId = uid;
@@ -39,7 +41,9 @@ io.on('connection', function(socket){
   })
 
   socket.on('shoot', function(){
-    shoot();
+    console.log(userId);
+    console.log(getTeam( userId));
+    playground.initShot( getTeam(userId));
   });
 
   socket.on('disconnect', function(){
@@ -49,32 +53,34 @@ io.on('connection', function(socket){
 });
 
 function addPlayer( id) {
-  console.log("adding player");
-  players.push( new Player(id));
+  let team;
+  if( players.length % 2 === 0){
+    team = 1;
+  } else {
+    team = 2;
+  }
+  console.log("adding player to team " + team);
+  players.push( new Player(id, team));
   console.log(JSON.stringify(players));
 }
 
-function removePlayer( id, team) {
-  console.log("removing player");
-  let index = players.some( function(i){
-    return i['id'] === id;
-  });
-  players.splice( index, 1);
-  console.log(JSON.stringify(players));
-}
-
-function shoot() {
-  var red = {r:255, g:0, b:0};
-  var white = {r: 255, g:255, b:255};
-  var black = {r: 0, g:0, b:0};
-  for( let i = 0; i <= size; i++){
-    setTimeout(function( ){
-      lichterkette.set( i-1, black);
-      lichterkette.set( i, red);
-    }, i*5);
+function getTeam( id) {
+  for( let i in players) {
+    if( players[i]['id'] === id) {
+      return players[i]['team'];
+    }
   }
 }
 
+function removePlayer( id) {
+  console.log("removing player");
+  for( let i in players) {
+    if( players[i]['id'] === id) {
+      players.splice( i, 1);
+      console.log(JSON.stringify(players));
+    }
+  }
+}
 
 http.listen(3000, function(){
   console.log("listening on port 3000");
