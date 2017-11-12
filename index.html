@@ -13,7 +13,7 @@
         <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script>
             $(function() {
-                let socket = io('http://192.168.2.135:3000');
+                let socket = io('localhost:3000');
 
                 socket.emit('playerCon', localStorage.getItem('uid'));
 
