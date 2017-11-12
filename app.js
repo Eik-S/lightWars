@@ -5,7 +5,7 @@ var http = require('http').createServer( app);
 var io = require('socket.io')(http);
 var uuid = require('uuid/v4');
 
-let size = 10;
+let size = 50;
 
 let players = [];
 let bar = [];

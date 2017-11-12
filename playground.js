@@ -8,18 +8,16 @@ var values = {
 }
 
 function slide( direction) {
-  let white = { r:255, g:255, b:255};
-  let black = {r: 0, g:0, b:0};
   if( values.bar > 0 &&
       values.bar + 5 < lichterkette.getLength() &&
       values.running ) {
     if( direction === 1) {
-      lichterkette.set(values.bar, black);
-      lichterkette.set(values.bar + 5, white);
+      lichterkette.set(values.bar, 'black');
+      lichterkette.set(values.bar + 5, 'white');
       values.bar += 1;
     } else if( direction === 2) {
-      lichterkette.set(values.bar + 4, black);
-      lichterkette.set(values.bar - 1, white);
+      lichterkette.set(values.bar + 4, 'black');
+      lichterkette.set(values.bar - 1, 'white');
       values.bar -= 1;
     }
   } else {
@@ -33,9 +31,9 @@ function endGame( direction) {
   for( let i = 0; i < 10; i++) {
     setTimeout( function() {
       if( i % 2 === 1) {
-        color = { r:0, g:0, b:0};
+        color = 'black';
       } else {
-        color = {r:255, g:255, b:255};
+        color = 'white';
       }
       lichterkette.set(values.bar, color);
       lichterkette.set(values.bar + 1, color);
@@ -56,7 +54,7 @@ module.exports = {
       values.bar = start;
       let end = start + 5;
       for( let i = start; i < end; i++) {
-        lichterkette.set( i, { r:255, g:255, b:255});
+        lichterkette.set( i, 'white');
       }
     }
     values.running = true;
@@ -64,8 +62,6 @@ module.exports = {
 
   initShot: function( direction) {
     let lkSize = lichterkette.getLength();
-    let red = {r:255, g:0, b:0};
-    let black = {r: 0, g:0, b:0};
     if( lichterkette.getStatus() && 
         values.bar < lichterkette.getLength() &&
         values.bar > 0 &&
@@ -73,8 +69,8 @@ module.exports = {
       if( direction === 1) {
         for( let i = 0; i <= values.bar; i++){
           setTimeout(function( ){
-            lichterkette.set( i-1, black);
-            lichterkette.set( i, red);
+            lichterkette.set( i-1, 'black');
+            lichterkette.set( i, 'red');
             if( i === values.bar) {
               slide( 1);
             }
@@ -83,8 +79,8 @@ module.exports = {
       } else if( direction === 2) {
         for( let i = lkSize; i >= values.bar + 4; i--) {
           setTimeout(function( ){
-            lichterkette.set( i+1, black);
-            lichterkette.set( i, red);
+            lichterkette.set( i+1, 'black');
+            lichterkette.set( i, 'red');
             if( i === values.bar + 4) {
               slide( 2);
             }

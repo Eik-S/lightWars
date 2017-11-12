@@ -1,4 +1,5 @@
 var chalk = require('chalk');
+var colors = require('./colors');
 
 
 var values = {
@@ -30,7 +31,7 @@ module.exports = {
   init: function(count){
     if( !values.init){
       for(let i = 0; i<count; i++){
-        values.kette.push({r:0,g:0,b:0});
+        values.kette.push(colors.black);
       }
       values.init = true;
     }
@@ -42,9 +43,15 @@ module.exports = {
     return values.kette.length;
   },
   set: function(index, value){
+    let color;
+    if( typeof value !== 'string') {
+      color = value;
+    } else {
+      color = colors[value];
+    }
     index = parseInt(index);
     if(values.init && parseInt(index) >= 0 && index < values.kette.length){
-      values.kette[index] = value;
+      values.kette[index] = color;
       draw();
     }
   },
